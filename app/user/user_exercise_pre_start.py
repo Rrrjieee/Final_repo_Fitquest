@@ -45,7 +45,7 @@ class CountdownScreen(Screen):
             size_hint       = [0.4, 0.3],
             pos_hint        = {'center_x': 0.5, 'y': 0.6},
             font_name       = admin_config.font_name[3],
-            font_size       = admin_config.font_size[5],
+            font_size       = admin_config.font_size[3],
         )
         layout.add_widget(label)
         self.add_widget(layout)
@@ -55,7 +55,7 @@ class CountdownScreen(Screen):
         self.counter        = Label(
             text            = str(initial_time),
             size_hint       = [0.4, 0.4],
-            pos_hint        = {'center_x': 0.5, 'y': 0.25},
+            pos_hint        = {'center_x': 0.5, 'y': 0.35},
             font_name       = admin_config.font_name[2],
             font_size       = admin_config.font_size[6],
         )
@@ -66,7 +66,6 @@ class CountdownScreen(Screen):
                 value           = int(self.counter.text)
             
             except BaseException as err:
-                print(f"An error occurred. \n{err}")
                 self._timer.cancel()
 
             value              -= 1

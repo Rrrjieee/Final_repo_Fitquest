@@ -1,23 +1,7 @@
 [
     {
         "username": "User 1",
-        "exercises": [
-            {
-                "name": "Bicep Curl Up",
-                "score": [
-                    0.543109344924875,
-                    0.4576189659657606,
-                    0.5240550036746147
-                ]
-            },
-            {
-                "name": "Squats",
-                "score": [
-                    0.390722884031734,
-                    0.20029976197302335
-                ]
-            }
-        ]
+        "exercises": []
     },
     {
         "username": "User 2",
@@ -25,21 +9,7 @@
     },
     {
         "username": "User 3",
-        "exercises": [
-            {
-                "name": "Bicep Curl Up",
-                "score": [
-                    0.4776041989427414,
-                    0.6604032022712266
-                ]
-            },
-            {
-                "name": "Squats",
-                "score": [
-                    0.1533219131506323
-                ]
-            }
-        ]
+        "exercises": []
     },
     {
         "username": "User 4",

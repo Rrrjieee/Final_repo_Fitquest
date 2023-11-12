@@ -211,7 +211,8 @@ class ProgressTrackScreen(Screen):
             size_hint   = [0.2, 1.0],
             pos_hint    = {'x': 0, 'y': 0},
             font_size   = 28,
-            color       = [1,1,1,1]
+            color       = [1,1,1,1],
+            valign      = 'center'
         )
         base_widget.add_widget(rout_label)
         rout_label.bind(size = rout_label.setter('text_size'))
