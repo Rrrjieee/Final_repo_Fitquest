@@ -99,6 +99,7 @@ class JSONExercise:
                      exer_sets: int,
                      exer_dur : int,
                      exer_desc: str,
+                     img_path : str = "",
                      body_arr : list[str] = None,
                      angle_arr: list[float] = None):
         # Check if the exercise already exists in json_list.
@@ -113,6 +114,7 @@ class JSONExercise:
             new_exer_dict.sets          = exer_sets
             new_exer_dict.duration      = exer_dur
             new_exer_dict.description   = exer_desc
+            new_exer_dict.img_path      = img_path
             new_exer_dict.set_exercise_dict_params(
                                           body_arr,
                                           angle_arr)
@@ -124,6 +126,7 @@ class JSONExercise:
             exer_sets   = exer_sets,
             exer_dur    = exer_dur,
             exer_desc   = exer_desc,
+            img_path    = img_path
         )
         new_exer_dict.set_exercise_dict_params(body_arr,
                                       angle_arr)
