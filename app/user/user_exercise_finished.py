@@ -23,38 +23,41 @@ from admin.admin_behavior import BackButtonDispatch
 from user.user_selection import UserScreen
 from user.user_exercise_start import ExerciseScreen
 
+
 class SummaryScreen(Screen):
-    _instance   = None
+    _instance = None
+
     def __new__(cls, *args, **kwargs):
         if cls._instance is None:
-            cls._instance   = super(SummaryScreen, cls).__new__(cls, **kwargs)
+            cls._instance = super(SummaryScreen, cls).__new__(cls, **kwargs)
         return cls._instance
 
     def __init__(self, sm: ScreenManager, app: App,
                  exer_average: dict, exer_screen: ExerciseScreen,
                  user_screen: UserScreen, **kwargs):
         super().__init__(**kwargs)
-        self._sm            = sm
-        self._app           = app
-        self.exer_average   = exer_average
-        self.exer_screen    = exer_screen
-        self.user_screen    = user_screen   # Exfiltrate user from user_screen via user_screen.get_choice()
+        self._sm = sm
+        self._app = app
+        self.exer_average = exer_average
+        self.exer_screen = exer_screen
+        # Exfiltrate user from user_screen via user_screen.get_choice()
+        self.user_screen = user_screen
 
         # ===============================
         #           Main layout
         # ===============================
-        layout              = FloatLayout(size_hint = [1.0, 1.0], pos_hint={'x': 0, 'y': 0})
-        bg                  = Image(source=admin_config.app['background'], fit_mode="fill")
+        layout = FloatLayout(size_hint=[1.0, 1.0], pos_hint={'x': 0, 'y': 0})
+        bg = Image(source=admin_config.app['background'], fit_mode="fill")
         layout.add_widget(bg)
-        self._layout        = layout
+        self._layout = layout
 
         self.add_widget(layout)
 
         logo            = Image(
             source      = admin_config.app['logo'],
             fit_mode    = "contain",
-            size_hint   = [.2, .2],
-            pos_hint    = {'x': 0.4, 'top': .9}
+            size_hint   = [0.35, 0.35],
+            pos_hint    = {'center_x': 0.5, 'top': 0.95}
         )
         layout.add_widget(logo)
 
@@ -74,6 +77,9 @@ class SummaryScreen(Screen):
         layout.add_widget(congratulations_label)
         congratulations_label.bind(size   = congratulations_label.setter("text_size"))
 
+        # congratulations_label
+        # completed_label
+
         completed_label         = Label(
             size_hint           = [None, 0.40],
             width               = 1080,
@@ -88,46 +94,50 @@ class SummaryScreen(Screen):
         layout.add_widget(completed_label)
         completed_label.bind(size = completed_label.setter('text_size'))
 
-        back_btn                = Button(
-            text                = 'BACK TO ROUTINE SELECTION',
-            background_normal   = "",
-            background_color    = user_config.button_params['bg_color'],
-            color               = user_config.button_params['color'],
-            font_name           = admin_config.font_name[1],
-            font_size           = admin_config.font_size[1],
-            size_hint           = [0.44, 0.10],
-            pos_hint            = {'x': 0.04, 'y': 0.05}
+        back_btn = Button(
+            text='BACK TO MAIN MENU',
+            background_normal="",
+            background_color=user_config.button_params['bg_color'],
+            color=user_config.button_params['color'],
+            font_name=admin_config.font_name[2],
+            font_size=admin_config.font_size[1],
+            size_hint=[0.44, 0.10],
+            pos_hint={'x': 0.04, 'y': 0.05}
         )
         layout.add_widget(back_btn)
         BackButtonDispatch.on_release(back_btn, 'user_routine_selection', self._sm, 'right',
                                       self.update_results)
 
-        progress_btn            = Button(
-            text                = "CHECK YOUR PROGRESS",
-            background_normal   = "",
-            background_color    = user_config.button_params['bg_color'],
-            color               = user_config.button_params['color'],
-            font_name           = admin_config.font_name[1],
-            font_size           = admin_config.font_size[1],
-            size_hint           = [0.44, 0.10],
-            pos_hint            = {'right': 0.96, 'y': 0.05}
+        progress_btn = Button(
+            text="CHECK TODAY'S PROGRESS",
+            background_normal="",
+            background_color=user_config.button_params['bg_color'],
+            color=user_config.button_params['color'],
+            font_name=admin_config.font_name[2],
+            font_size=admin_config.font_size[1],
+            size_hint=[0.44, 0.10],
+            pos_hint={'right': 0.96, 'y': 0.05}
         )
         layout.add_widget(progress_btn)
-        BackButtonDispatch.on_release(progress_btn, 'progress_screen', self._sm, 'left')
+        BackButtonDispatch.on_release(
+            progress_btn, 'progress_screen', self._sm, 'left')
 
     def update_results(self):
         if len(self.exer_average['exercises'] > 0):
-                self.exer_screen.reset_average()
+            self.exer_screen.reset_average()
+
     def on_enter(self, *args):
-        user: UserDetails               = self.user_screen.get_choice()
+        user: UserDetails = self.user_screen.get_choice()
         if user is None:
-                raise RuntimeError("No user specified! This screen should be unreachable!")
-        exer_list                       = self.exer_average['exercise']
-        avg_list                        = self.exer_average['average']
-        json_user                       = json_handler.JSONUser()
+            raise RuntimeError(
+                "No user specified! This screen should be unreachable!")
+
+        exer_list = self.exer_average['exercise']
+        avg_list = self.exer_average['average']
+        json_user = json_handler.JSONUser()
         for i in range(len(exer_list)):
-            exercise: ExerciseDetails   = exer_list[i]
-            avg_score: float            = avg_list[i]
+            exercise: ExerciseDetails = exer_list[i]
+            avg_score: float = avg_list[i]
             user.add_exercise(exercise, avg_score)
+
         json_user.update()
-        
