@@ -48,7 +48,7 @@ class ExerciseTabs:
         # Image Upload Button
         #TO-DO: replace source image path with a sensible path.  
         upload_image_btn    = ImageButton(
-            source          = "path_to_default_image.png",
+            source          = app_config.path['icons']['exercise'],
             size_hint       = [0.116, 0.15],
             pos_hint        = {'x': 0.05, 'y': 0.1}
         )
