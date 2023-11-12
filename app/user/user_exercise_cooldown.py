@@ -83,7 +83,7 @@ class CooldownScreen(Screen):
             size_hint=[0.90, 0.80],
             text=user_config.cooldown_ratings[0],
             font_name=admin_config.font_name[2],
-            font_size=admin_config.font_size[1],
+            font_size=24,
             pos_hint={'center_x': 0.50, 'center_y': 0.45},
             color=[0.3333, 0.2824, 0.7216, 1]
         )
@@ -186,7 +186,8 @@ class CooldownScreen(Screen):
             pos_hint        = {'right': 0.96, 'y': 0.05},
             text            = 'Continuing in:',
             halign          = 'right',
-            font_size       = 50,
+            font_name           = admin_config.font_name[1],
+            font_size           = admin_config.font_size[3],
         )
         if not self.start_screen.has_remaining_exercises():
             self.dur_label.text    = "Finishing in:"
