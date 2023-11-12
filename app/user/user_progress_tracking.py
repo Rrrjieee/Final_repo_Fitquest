@@ -22,7 +22,6 @@ from user.user_selection import UserScreen
 from user.user_exercise_start import ExerciseScreen
 from user.user_exercise_cooldown import CooldownScreen
 
-
 class BoundMethods:
     @staticmethod
     def on_instance_pos(instance, pos):

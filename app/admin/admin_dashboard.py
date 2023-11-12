@@ -22,6 +22,7 @@ from kivy.clock import Clock
 #       Import local files
 # =================================
 import admin.app_config as app_config
+import user.user_config as user_config
 
 from admin.json_handler import JSONExercise, JSONRoutine, ExerciseDetails, RoutineDetails
 from admin.admin_widgets import *
@@ -47,12 +48,23 @@ class ExerciseTabs:
 
         # Image Upload Button
         #TO-DO: replace source image path with a sensible path.  
-        upload_image_btn    = ImageButton(
-            source          = app_config.path['icons']['exercise'],
-            size_hint       = [0.116, 0.15],
-            pos_hint        = {'x': 0.05, 'y': 0.1}
+        admin.upload_image_btn  = upload_image_btn  = ImageButton(
+            source              = app_config.path['icons']['exercise'],
+            size_hint           = [None, 0.14],
+            width               = 100,
+            pos_hint            = {'x': 0.05, 'y': 0.1},
+            fit_mode            = 'fill'
         )
-        upload_image_btn.bind(on_release=admin.open_file_chooser)
+        upload_image_btn.bind(height        = upload_image_btn.setter('width'))
+        with upload_image_btn.canvas.before:
+            upload_image_btn.rect_color     = Color(*user_config.button_params['light_color'])
+            upload_image_btn.rect           = Rectangle(
+                pos                         = upload_image_btn.pos,
+                size                        = upload_image_btn.size,
+            )
+        upload_image_btn.bind(pos           = admin.on_button_pos)
+        upload_image_btn.bind(size          = admin.on_button_size)
+        upload_image_btn.bind(on_release    = admin.open_file_chooser)
         tab_container.add_widget(upload_image_btn)
 
         def show_success_popup():
@@ -63,7 +75,10 @@ class ExerciseTabs:
             popup.open()
 
         def on_exercise_defined(instance):
-            if (not admin._name.text) or (int(admin._reps.text) <= 0) or (int(admin._sets.text) <= 0) or (int(admin._dur.text) <= 0):
+            if ((not admin._name.text) or
+                (int(admin._reps.text) <= 0) or 
+                (int(admin._sets.text) <= 0) or 
+                (int(admin._dur.text) <= 0)):
                 # Create an error label
                 error_label = Label(text="Please fill in all fields.", color=(1, 0, 0, 1))
 
@@ -96,7 +111,8 @@ class ExerciseTabs:
                 int(admin._reps.text),
                 int(admin._sets.text),
                 int(admin._dur.text),
-                admin._desc.text
+                admin._desc.text,
+                img_path    = admin._image_src
             )
             Clock.schedule_once(
                 admin.on_add_exer_text_clear,
@@ -111,7 +127,6 @@ class ExerciseTabs:
         add_exercise_btn.bind(on_release=on_exercise_defined)
         tab_content.add_widget(add_exercise_btn)
         
-
         # Table (using GridLayout)
         table               = GridLayout(cols=2, row_force_default=True, row_default_height=60, spacing=[0,5])
         admin._table        = table
@@ -950,6 +965,7 @@ class AdminDashboard(Screen):
         self.popup          = kwargs.pop('popup', None)
         self.app_data       = kwargs.pop('app_data', {})
         self._last_routine  = None
+        self._image_src     = ""
 
         super().__init__(**kwargs)
         
@@ -1001,23 +1017,49 @@ class AdminDashboard(Screen):
         tab_item    = fun(self, tab_panel)
         tab_panel.add_widget(tab_item)
 
+    # ===================================
+    #       on_ methods added for
+    #       the upload image button
+    # ===================================
+    def on_button_pos(self, instance, pos):
+        if not hasattr(instance, 'rect'):
+            return
+        instance.rect.pos   = pos
+
+    def on_button_size(self, instance, size):
+        if not hasattr(instance, 'rect'):
+            return
+        instance.rect.size   = size
+
     def open_file_chooser(self, instance):
-        file_chooser = FileChooserIconView()
+        import os
+        file_chooser    = FileChooserIconView(
+            filters     = ["*.png"],
+            path        = os.getcwd(),
+        )
         file_chooser.bind(on_submit=self.on_file_selection)
-        popup = Popup(title="Select an Image", content=file_chooser, size_hint=(None, None), size=(400, 400))
+        popup               = Popup(title="Select an Image", content=file_chooser, size_hint=(None, None), size=(400, 400))
+        self._active_popup  = popup
         popup.open()
+
     def on_file_selection(self, instance, selection, touch):
         if selection:
             # Update the image source with the selected file
-            selected_image_path = selection[0]
-            self.image_source.source = selected_image_path
+            selected_image_path             = selection[0]
+            self.upload_image_btn.source    = self._image_src   = selected_image_path
+            self._active_popup.dismiss()
+            self._active_popup              = None
+        else:
+            self.upload_image_btn.source    = app_config.path['icons']['exercise']
     
     def on_add_exer_text_clear(self, *args):
-        self._name.text = ""
-        self._reps.text = ""
-        self._sets.text = ""
-        self._dur.text  = ""
-        self._desc.text = ""
+        self._name.text                 = ""
+        self._reps.text                 = ""
+        self._sets.text                 = ""
+        self._dur.text                  = ""
+        self._desc.text                 = ""
+        self._image_src                 = ""
+        self.upload_image_btn.source    = app_config.path['icons']['exercise']
 
     def add_rout_check_send(self, *args):
         rout_elements   = self._routine_elements
