@@ -93,8 +93,8 @@ class CustomRoutineScreen(Screen):
             background_color    =user_config.button_params['bg_color'],
             color               =user_config.button_params['color'],
             text                ='BACK',
-            font_name           =admin_config.font_name[2],
-            font_size           =admin_config.font_size[0],
+            font_name           =admin_config.font_name[1],
+            font_size           =admin_config.font_size[3],
             size_hint           =[0.10, 0.10],
             pos_hint            ={'x': 0.02, 'y': 0.02}
         )
@@ -109,7 +109,7 @@ class CustomRoutineScreen(Screen):
             color               =user_config.button_params['color'],
             text                ='START',
             font_name           =admin_config.font_name[1],
-            font_size           =admin_config.font_size[1],
+            font_size           =admin_config.font_size[3],
             size_hint           =[0.10, 0.10],
             pos_hint            ={'right': 0.98, 'y': 0.02},
             disabled            =True
@@ -173,7 +173,8 @@ class CustomRoutineScreen(Screen):
         self.exer_options = ScrollableOption(
             size_hint=[0.30, 1.0],
             pos_hint={'x': 0, 'y': 0},
-            font_size=admin_config.font_size[2],
+            font_name           = admin_config.font_name[1],
+            font_size           = admin_config.font_size[3],
             cols=2,
             text='EXERCISES:',
             spacing=20,
@@ -244,7 +245,8 @@ class CustomRoutineScreen(Screen):
         self.reps_options       = ScrollableOption(
             size_hint           =[0.30, 0.54],
             pos_hint            ={'x': 0.33, 'y': 0.46},
-            font_size           =admin_config.font_size[2],
+            font_name           = admin_config.font_name[1],
+            font_size           = admin_config.font_size[3],
             cols                =3,
             text                ='REPS:',
             spacing             =5,
@@ -292,7 +294,8 @@ class CustomRoutineScreen(Screen):
         self.sets_options = ScrollableOption(
             size_hint=[0.30, 0.42],
             pos_hint={'x': 0.33, 'y': 0.0},
-            font_size=admin_config.font_size[2],
+            font_name           = admin_config.font_name[1],
+            font_size           = admin_config.font_size[3],
             cols=3,
             text='SETS:',
             spacing=5,
@@ -343,7 +346,7 @@ class CustomRoutineScreen(Screen):
             color               =user_config.button_params['color'],
             text                ='INSERT',
             font_name           =admin_config.font_name[1],
-            font_size           =admin_config.font_size[1],
+            font_size           =admin_config.font_size[3],
             size_hint           =[0.10, 0.10],
             pos_hint            ={'right': 0.87, 'y': 0.02},
             disabled            =True
@@ -385,7 +388,8 @@ class CustomRoutineScreen(Screen):
         self.exer_list_layout   = ScrollableOption(
             size_hint           =[0.34, 1.00],
             pos_hint            ={'x': 0.66, 'y': 0.0},
-            font_size           =admin_config.font_size[2],
+            font_name           = admin_config.font_name[1],
+            font_size           = admin_config.font_size[3],
             cols                =1,
             text                ='Exercise List:',
             spacing             =5,

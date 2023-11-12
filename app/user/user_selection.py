@@ -70,7 +70,7 @@ class UserScreen(Screen):
         notice_label        = Label(
             text            = "WHO'S EXERCISING?",
             font_name       = admin_config.font_name[1],
-            font_size       = admin_config.font_size[3],
+            font_size       = admin_config.font_size[5],
             size_hint       = [0.44, 0.24],
             pos_hint        = {'center_x': 0.5, 'y': 0.56}
         )
@@ -165,7 +165,7 @@ class UserScreen(Screen):
         back_btn   = Button(
             text                = 'BACK',
             font_name           = admin_config.font_name[1],
-            font_size           = admin_config.font_size[0],
+            font_size           = admin_config.font_size[3],
             background_normal   = user_config.button_params['bg_normal'],
             background_color    = user_config.button_params['bg_color'],
             color               = user_config.button_params['color'],

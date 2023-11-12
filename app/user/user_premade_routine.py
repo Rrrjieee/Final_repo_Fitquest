@@ -95,7 +95,7 @@ class PremadeRoutineScreen(Screen):
             color               =user_config.button_params['color'],
             text                ='BACK',
             font_name           =admin_config.font_name[1],
-            font_size           =admin_config.font_size[0],
+            font_size           =admin_config.font_size[3],
             size_hint           =[0.10, 0.10],
             pos_hint            ={'x': 0.02, 'y': 0.02}
         )
@@ -110,7 +110,7 @@ class PremadeRoutineScreen(Screen):
             color               =user_config.button_params['color'],
             text                ='START',
             font_name           =admin_config.font_name[1],
-            font_size           =admin_config.font_size[0],
+            font_size           =admin_config.font_size[3],
             size_hint           =[0.10, 0.10],
             pos_hint            ={'right': 0.98, 'y': 0.02},
             disabled            =True
@@ -222,7 +222,7 @@ class PremadeRoutineScreen(Screen):
                 pos_hint        ={'center_x': 0.5, 'center_y': 0.5},
                 text            =routine.routine_name,
                 font_size       =admin_config.font_size[2],
-                font_name       =admin_config.font_name[2],
+                font_name       =admin_config.font_name[1],
             )
             btn_routine_bg.add_widget(btn_routine_label)
             KivyPropHandler.on_text_size_change(btn_routine_label, 0.5)
@@ -234,7 +234,7 @@ class PremadeRoutineScreen(Screen):
                 pos_hint    =   {'center_x': 0.5, 'center_y': 0.5},
                 text        =   routine.routine_description,
                 font_size   =   admin_config.font_size[1],
-                font_name   =   admin_config.font_name[2],
+                font_name   =   admin_config.font_name[0],
 
                 color       =[0, 0, 0, 1]
             )
