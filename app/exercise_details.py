@@ -7,7 +7,7 @@ class ExerciseDetails:
                  exer_desc: str,
                  body_arr : list[str] = None,
                  angle_arr: list[float] = None,
-                 img_path: str = ""):
+                 img_path : str = ""):
         self.name           = exer_name
         self.reps           = exer_reps
         self.sets           = exer_sets
