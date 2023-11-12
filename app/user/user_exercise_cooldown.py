@@ -97,7 +97,7 @@ class CooldownScreen(Screen):
             cols=self._stars,
             rows=1.0,
             size_hint=[1.0, 0.15],
-            pos_hint={'center_x': 0.50, 'center_y': 0.30}
+            pos_hint={'center_x': 0.50, 'center_y': 0.35}
         )
         exer_container.add_widget(star_container)
 
