@@ -59,6 +59,8 @@ class ExerciseScreen(Screen):
         else:
             self.exer_average['exercise'].clear()
             self.exer_average['average'].clear()
+            
+        self.routine_name       = ""
     
     def __new__(cls, *args, **kwargs):
         if cls._instance is None:
@@ -339,10 +341,11 @@ class ExerciseScreen(Screen):
                     exercise_start page should be unreachable when no routines are loaded!
             ''')
 
+        self.routine_name       = rout_list.routine_name
         while len(rout_list.exercises) > 0:
-            exercise             = rout_list.exercises[0]
+            exercise            = rout_list.exercises[0]
             if deduct:
-                exercise.sets   -= 1
+                exercise.sets  -= 1
 
             if exercise.sets > -1:
                 return exercise
@@ -411,7 +414,6 @@ class ExerciseScreen(Screen):
         self._active            = False
 
         self.exer_average['exercise'].append(self.active_exercise)
-        print(f"to_next_screen >> {self.active_exercise}")
         try:
             self.exer_average['average'].append(self.run_average / self.run_instances)
         except ZeroDivisionError:

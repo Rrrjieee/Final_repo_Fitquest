@@ -22,6 +22,7 @@ from user.user_selection import UserScreen
 from user.user_exercise_start import ExerciseScreen
 from user.user_exercise_cooldown import CooldownScreen
 
+
 class BoundMethods:
     @staticmethod
     def on_instance_pos(instance, pos):
@@ -36,7 +37,8 @@ class BoundMethods:
         instance.rect.size  = size
 
 class ProgressTrackScreen(Screen):
-    _instance   = None
+    _instance               = None
+    multiple_tiles_per_node = BooleanProperty(True)
     def __new__(cls, *args, **kwargs):
         if cls._instance is None:
             cls._instance   = super(ProgressTrackScreen, cls).__new__(cls, *args, **kwargs)
@@ -208,14 +210,15 @@ class ProgressTrackScreen(Screen):
         rout_label      = Label(
             size_hint   = [0.2, 1.0],
             pos_hint    = {'x': 0, 'y': 0},
-            font_size   = 24,
+            font_size   = 28,
             color       = [1,1,1,1]
         )
         base_widget.add_widget(rout_label)
+        rout_label.bind(size = rout_label.setter('text_size'))
 
         if self.exer_screen.routine_name == "":
             self._index        += 1
-            rout_label.text     = f'Routine {self._index}'
+            rout_label.text     = f'Custom Routine {self._index}'
         else:
             rout_label.text     = self.exer_screen.routine_name
 
@@ -260,7 +263,6 @@ class ProgressTrackScreen(Screen):
         # ==================================
         for i in range(len(exer_list)):
             exercise, score = exer_list[i], avg_list[i]
-            print(f"exercise index: [{i}]")
             score           = 1 if score > 1 else (0 if score < 0 else score)
             stars           = CooldownScreen.star_rating(score)
 
@@ -316,7 +318,8 @@ class ProgressTrackScreen(Screen):
             exercise    = exer_list[i]
             avg_score   = avg_list[i]
             avg_size   += 1
-            if (not exercise in exer_map):
+            if ((self.multiple_tiles_per_node) or 
+                (not exercise in exer_map)):
                 exer_map[exercise]  = True
                 
                 out_exer_list.append(exercise)
