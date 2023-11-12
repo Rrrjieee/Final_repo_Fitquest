@@ -1,0 +1,29 @@
+[
+    {
+        "username": "User 1",
+        "exercises": []
+    },
+    {
+        "username": "User 2",
+        "exercises": []
+    },
+    {
+        "username": "User 3",
+        "exercises": [
+            {
+                "name": "Bicep Curl Up",
+                "score": [
+                    0.4776041989427414
+                ]
+            }
+        ]
+    },
+    {
+        "username": "User 4",
+        "exercises": []
+    },
+    {
+        "username": "User 5",
+        "exercises": []
+    }
+]
