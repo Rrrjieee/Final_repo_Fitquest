@@ -52,7 +52,7 @@ class ExerciseTabs:
             source              = app_config.path['icons']['exercise'],
             size_hint           = [None, 0.14],
             width               = 100,
-            pos_hint            = {'x': 0.05, 'y': 0.1},
+            pos_hint            = {'right': 0.95, 'y': 0.05},
             fit_mode            = 'fill'
         )
         upload_image_btn.bind(height        = upload_image_btn.setter('width'))
@@ -126,6 +126,18 @@ class ExerciseTabs:
         add_exercise_btn    = Button(text='Add New Exercise', size_hint_y=None, height=50)
         add_exercise_btn.bind(on_release=on_exercise_defined)
         tab_content.add_widget(add_exercise_btn)
+
+        upload_label        = Label(
+            text            = 'Upload Image:',
+            size_hint       = [0.35, 0.15],
+            pos_hint        = {'right': 0.85, 'y': 0.05},
+            font_size       = app_config.font_size[0],
+            font_name       = app_config.font_name[0],
+            halign          = 'right',
+            valign          = 'center'
+        )
+        upload_label.bind(size  = upload_label.setter('text_size'))
+        tab_container.add_widget(upload_label)
         
         # Table (using GridLayout)
         table               = GridLayout(cols=2, row_force_default=True, row_default_height=60, spacing=[0,5])
