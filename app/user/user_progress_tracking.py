@@ -323,7 +323,7 @@ class ProgressTrackScreen(Screen):
         if rout_name != '':
             user.add_routine_info(rout_name, avg_list, exer_list)
         else:
-            user.add_routine_info("Custom Routine", avg_list, exer_list)
+            user.add_routine_info("", avg_list, exer_list)
 
         self._index = 0
         self.grid.clear_widgets()
