@@ -46,6 +46,7 @@ class UserDetails:
         self.exercises.append(iter_dict)
 
     def add_routine_info(self,
+                         routine_name: str,
                          avg_list: list[float],
                          exer_list: list[ExerciseDetails] | list[str]):
         
@@ -57,6 +58,7 @@ class UserDetails:
                 name_list.append(name)
 
         entry_dict      = {
+            'name'      : routine_name,
             'average'   : avg_list,
             'exercise'  : name_list,
         }

@@ -186,6 +186,7 @@ class ProgressTrackScreen(Screen):
         BackButtonDispatch.on_release(back_btn, 'exercise_finished', self._sm, 'right')
 
     def create_routine_from_list(self,
+                         rout_name: str,
                          avg_list: list[float],
                          exer_list: list[ExerciseDetails]):
         base_widget                 = FloatLayout(
@@ -218,11 +219,11 @@ class ProgressTrackScreen(Screen):
         base_widget.add_widget(rout_label)
         rout_label.bind(size = rout_label.setter('text_size'))
 
-        if self.exer_screen.routine_name == "":
+        if rout_name == "":
             self._index        += 1
             rout_label.text     = f'Custom Routine {self._index}'
         else:
-            rout_label.text     = self.exer_screen.routine_name
+            rout_label.text     = rout_name
 
         with rout_label.canvas.before:
             rout_label.rect_color   = Color(*user_config.button_params['color'])
@@ -318,12 +319,16 @@ class ProgressTrackScreen(Screen):
         if user is None:
             raise RuntimeError("\nNo user was selected. How did you even get here?!")
         
-        user.add_routine_info(avg_list, exer_list)
+        rout_name           = self.exer_screen.routine_name
+        if rout_name != '':
+            user.add_routine_info(rout_name, avg_list, exer_list)
+        else:
+            user.add_routine_info("Custom Routine", avg_list, exer_list)
 
         self._index = 0
         self.grid.clear_widgets()
         for routine_dict in user.routines:
-                self.create_routine_from_list(routine_dict['average'], routine_dict['exercise'])
+            self.create_routine_from_list(rout_name, routine_dict['average'], routine_dict['exercise'])
 
     def add_average_list(self,
                          avg_list: list[float],

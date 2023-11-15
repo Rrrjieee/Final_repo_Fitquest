@@ -292,11 +292,11 @@ class JSONUser:
 
             for inner_dict in user_dict['routines']:
                 user.add_routine_info(
+                    inner_dict['name'],
                     inner_dict['average'],
                     inner_dict['exercise'],
                 )
 
-        
     def extract_list(self) -> list[UserDetails]:
         ret_list    = []
         for user in self.user_list:
