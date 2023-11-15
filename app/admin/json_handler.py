@@ -134,6 +134,16 @@ class JSONExercise:
         self.json_list.append(new_exer_dict)
         self.update()
         return new_exer_dict
+    
+    # def remove_routine(self, routine: RoutineDetails):
+    #     for rout_dict in self.rout_list:
+    #         if rout_dict.routine_name == routine.routine_name:
+    #             try:
+    #                 self.rout_list.remove(routine)
+    #                 break
+    #             except: 
+    #                 pass
+    #     self.update()        
 
 # This class must operate after JSONExercise
 class JSONRoutine:

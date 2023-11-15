@@ -221,7 +221,7 @@ class ExerciseScreen(Screen):
 
         # ===============================
         #       Back button behavior
-        # ===============================
+        # ===============================+= 1
         back_btn                = Button(
             background_normal   = user_config.button_params['bg_normal'],
             background_color    = user_config.button_params['bg_color'],
@@ -241,7 +241,8 @@ class ExerciseScreen(Screen):
     def process_score(self, ret_code, angle, ideal_angle):
         score        = abs(angle - ideal_angle) / 360.0
         if ret_code == ReturnCode.SUCCESS:
-            score   += 15.0
+            # score   += 1.0
+            score   += 6.0
         return score
 
     def on_camera_update(self, tick):
@@ -321,14 +322,18 @@ class ExerciseScreen(Screen):
                 # cur_exercise.check is defined
                 ret_code            = exercise.check(cv_texture)
 
+                # prscore = self.process_score(*ret_code)
                 self.run_average   += self.process_score(*ret_code)
                 self.run_instances += 1
 
                 if ret_code[0] == ReturnCode.SUCCESS:
+                    # self.run_average   += self.process_score(*ret_code)
+                    # self.run_instances += 1
                     Clock.schedule_once(
                         self.inc_count,
                         0
                     )
+
             except:
                 pass
 

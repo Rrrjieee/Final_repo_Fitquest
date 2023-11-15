@@ -189,6 +189,13 @@ class ProgressTrackScreen(Screen):
                          rout_name: str,
                          avg_list: list[float],
                          exer_list: list[ExerciseDetails]):
+        
+        #if score below 4 will not be displayed in progress tracking
+        # for score in avg_list:
+        #     if score >= .6:
+        #         break
+        # else:
+        #     return
         base_widget                 = FloatLayout(
             size_hint               = [1.0, None],
             height                  = 300,
@@ -270,6 +277,9 @@ class ProgressTrackScreen(Screen):
             exercise        = exercise if isinstance(exercise, ExerciseDetails) else self.json_exer.get_exercise(exercise)
 
             score           = 1 if score > 1 else (0 if score < 0 else score)
+            #if score below 4 will not be displayed in progress tracking
+            # if score < .6:
+            #     continue
             stars           = CooldownScreen.star_rating(score)
 
             exer_layout     = FloatLayout(
