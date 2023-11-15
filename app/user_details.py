@@ -51,11 +51,14 @@ class UserDetails:
         
         name_list       = []
         for name in exer_list:
-            name_list.append(name.name if isinstance(name, ExerciseDetails) else name)
+            if isinstance(name, ExerciseDetails):
+                name_list.append(name.name)
+            else:
+                name_list.append(name)
 
         entry_dict      = {
             'average'   : avg_list,
-            'exercise'  : name,
+            'exercise'  : name_list,
         }
         self.routines.append(entry_dict)
 
