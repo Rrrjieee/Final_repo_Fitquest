@@ -328,7 +328,7 @@ class ProgressTrackScreen(Screen):
         self._index = 0
         self.grid.clear_widgets()
         for routine_dict in user.routines:
-            self.create_routine_from_list(rout_name, routine_dict['average'], routine_dict['exercise'])
+            self.create_routine_from_list(routine_dict['name'], routine_dict['average'], routine_dict['exercise'])
 
     def add_average_list(self,
                          avg_list: list[float],
