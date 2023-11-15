@@ -110,6 +110,8 @@ class MainScreen(Screen):
 
 
 class MyApp(AppHandler):
+    update_user_on_close    = BooleanProperty(False)
+
     def __init__(self,
                  is_admin: bool = False,
                  debug_mode: bool = True,
@@ -255,6 +257,9 @@ class MyApp(AppHandler):
         if (hasattr(self, 'sound') and self.sound):
             self.sound_active = False
             self.sound.stop()
+
+        if not self.update_user_on_close:
+            return
 
         global user_list_obj
         user_list_obj.update()
