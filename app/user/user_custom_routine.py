@@ -104,15 +104,15 @@ class CustomRoutineScreen(Screen):
         self.add_widget(layout)
 
         start_btn               = Button(
-            background_normal   =user_config.button_params['bg_normal'],
-            background_color    =user_config.button_params['bg_color'],
-            color               =user_config.button_params['color'],
-            text                ='START',
-            font_name           =admin_config.font_name[2],
-            font_size           =admin_config.font_size[0],
-            size_hint           =[0.10, 0.10],
-            pos_hint            ={'right': 0.98, 'y': 0.02},
-            disabled            =True
+            background_normal   = user_config.button_params['bg_normal'],
+            background_color    = user_config.button_params['bg_color'],
+            color               = user_config.button_params['color'],
+            text                = 'START',
+            font_name           = admin_config.font_name[2],
+            font_size           = admin_config.font_size[0],
+            size_hint           = [0.10, 0.10],
+            pos_hint            = {'right': 0.98, 'y': 0.02},
+            disabled            = True
         )
         layout.add_widget(start_btn)
         self.start_button = start_btn
@@ -523,3 +523,6 @@ class CustomRoutineScreen(Screen):
             del self.child_layout
             
         self.clear_data()
+        # Uncomment the line below to handle the automatic disabling
+        # of the start button.
+        # self.check_start_state()
