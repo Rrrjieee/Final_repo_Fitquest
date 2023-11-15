@@ -49,6 +49,7 @@ class ProgressTrackScreen(Screen):
                  exer_average: dict,
                  exer_screen: ExerciseScreen,
                  user_screen: UserScreen,
+                 json_user: json_handler.JSONExercise,
                  **kwargs):
         
         super().__init__(**kwargs)
@@ -58,6 +59,7 @@ class ProgressTrackScreen(Screen):
         self.exer_average   = exer_average
         self.exer_screen    = exer_screen
         self.user_screen    = user_screen
+        self.json_user      = json_user
 
         # =============================
         #        Base Layout
@@ -263,6 +265,9 @@ class ProgressTrackScreen(Screen):
         # ==================================
         for i in range(len(exer_list)):
             exercise, score = exer_list[i], avg_list[i]
+            # Coerce exercise into an ExerciseDetails object if need be.
+            exercise        = exercise if isinstance(exercise, ExerciseDetails) else json_handler.JSONExercise.get_exercise(exercise)
+
             score           = 1 if score > 1 else (0 if score < 0 else score)
             stars           = CooldownScreen.star_rating(score)
 
@@ -305,6 +310,24 @@ class ProgressTrackScreen(Screen):
                 else:
                     star_icon.color     = [0.2, 0.2, 0.2, 1]
 
+    def add_routine_from_list(self,
+                              avg_list: list[float],
+                              exer_list: list[ExerciseDetails]):
+        
+        user: UserDetails   = self.user_screen.get_choice()
+        if user is None:
+            raise RuntimeError("\nNo user was selected. How did you even get here?!")
+        
+        user.add_routine_info(avg_list, exer_list)
+
+        self._index = 0
+        self.grid.clear_widgets()
+        for routine_dict in user.routines:
+            try:
+                self.create_routine_from_list(routine_dict['average'], routine_dict['exercise'])
+            except TypeError:
+                print(routine_dict)
+
     def add_average_list(self,
                          avg_list: list[float],
                          exer_list: list[ExerciseDetails]):
@@ -330,7 +353,9 @@ class ProgressTrackScreen(Screen):
         if len(out_exer_list) < 1:
             return
         
-        self.create_routine_from_list(out_avg_list, out_exer_list)
+        self.add_routine_from_list(out_avg_list, out_exer_list)
+        # self.grid.clear_widgets()
+        # for 
 
     def on_pre_enter(self):
         self.add_average_list(

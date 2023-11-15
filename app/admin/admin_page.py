@@ -123,7 +123,7 @@ class MyApp(AppHandler):
 
     def load_user_app(self):
         # Grant access to the ScreenManager via shallow copy assignment.
-        global user_list_obj
+        global user_list_obj, exer_list_obj
         self.user           = user_select_page.UserScreen(
             self._sm,
             name            = 'user_selection',
@@ -191,6 +191,7 @@ class MyApp(AppHandler):
                 self.exer_scr.exer_average,
                 self.exer_scr,
                 self.user,
+                exer_list_obj,
                 name='progress_screen'
             )
         )

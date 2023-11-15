@@ -1,10 +1,12 @@
 from exercise_details import ExerciseDetails
+from routine_details import RoutineDetails
 
 class UserDetails:
     def __init__(self,
                  name: str):
         self.username   = name
         self.exercises  = []
+        self.routines   = []
 
     def add_exercise(self,
                      exercise: ExerciseDetails,
@@ -42,6 +44,20 @@ class UserDetails:
         else:
             iter_dict['score']  = avg_list[:]
         self.exercises.append(iter_dict)
+
+    def add_routine_info(self,
+                         avg_list: list[float],
+                         exer_list: list[ExerciseDetails] | list[str]):
+        
+        name_list       = []
+        for name in exer_list:
+            name_list.append(name.name if isinstance(name, ExerciseDetails) else name)
+
+        entry_dict      = {
+            'average'   : avg_list,
+            'exercise'  : name,
+        }
+        self.routines.append(entry_dict)
 
     def get_exercise_list(self) -> list[dict[str, str]]:
         '''

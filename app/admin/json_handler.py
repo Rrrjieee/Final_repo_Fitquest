@@ -166,7 +166,7 @@ class JSONRoutine:
                 )
                 self.rout_list.append(rout_object)
                 continue
-            
+
             for i in range(len(exer_list)):
                 exercise            = exer_list[i]
                 base_obj            = JSONExercise().get_exercise(exercise['name'])
@@ -286,6 +286,16 @@ class JSONUser:
                     raise ValueError(f"\nCould not find the given exercise {user_dict['name']} in {app_config.json['content']}. Please add them directly or through the app.")
 
                 user.add_exercise(exercise, user_dict['score'])
+
+            if not 'routines' in user_dict:
+                continue
+
+            for inner_dict in user_dict['routines']:
+                user.add_routine_info(
+                    inner_dict['average'],
+                    inner_dict['exercise'],
+                )
+
         
     def extract_list(self) -> list[UserDetails]:
         ret_list    = []
@@ -308,10 +318,15 @@ class JSONUser:
             user_dict   = {
                 'username'  : user.username,
                 'exercises' : [],
+                'routines'  : [],
             }
             user_dict_exer  = user_dict['exercises']
             for exercise in user.exercises:
                 user_dict_exer.append(exercise)
+
+            user_dict_rout  = user_dict['routines']
+            for routine in user_dict['routines']:
+                user_dict_rout.append(routine)
 
             content.append(user_dict)
 
