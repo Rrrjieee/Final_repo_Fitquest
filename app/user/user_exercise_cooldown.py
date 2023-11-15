@@ -182,7 +182,7 @@ class CooldownScreen(Screen):
         layout.add_widget(self.dur_layout)
 
         self.dur_label      = Label(
-            size_hint       = [0.40, 0.50],
+            size_hint       = [0.50, 0.50],
             pos_hint        = {'right': 0.96, 'y': 0.05},
             text            = 'Continuing in:',
             halign          = 'right',
