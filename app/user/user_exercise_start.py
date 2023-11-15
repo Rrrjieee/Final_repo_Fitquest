@@ -241,7 +241,7 @@ class ExerciseScreen(Screen):
     def process_score(self, ret_code, angle, ideal_angle):
         score        = abs(angle - ideal_angle) / 360.0
         if ret_code == ReturnCode.SUCCESS:
-            score   += 2.0
+            score   += 15.0
         return score
 
     def on_camera_update(self, tick):
