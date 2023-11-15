@@ -49,7 +49,7 @@ class ProgressTrackScreen(Screen):
                  exer_average: dict,
                  exer_screen: ExerciseScreen,
                  user_screen: UserScreen,
-                 json_user: json_handler.JSONExercise,
+                 json_exer: json_handler.JSONExercise,
                  **kwargs):
         
         super().__init__(**kwargs)
@@ -59,7 +59,7 @@ class ProgressTrackScreen(Screen):
         self.exer_average   = exer_average
         self.exer_screen    = exer_screen
         self.user_screen    = user_screen
-        self.json_user      = json_user
+        self.json_exer      = json_exer
 
         # =============================
         #        Base Layout
@@ -266,7 +266,7 @@ class ProgressTrackScreen(Screen):
         for i in range(len(exer_list)):
             exercise, score = exer_list[i], avg_list[i]
             # Coerce exercise into an ExerciseDetails object if need be.
-            exercise        = exercise if isinstance(exercise, ExerciseDetails) else json_handler.JSONExercise.get_exercise(exercise)
+            exercise        = exercise if isinstance(exercise, ExerciseDetails) else self.json_exer.get_exercise(exercise)
 
             score           = 1 if score > 1 else (0 if score < 0 else score)
             stars           = CooldownScreen.star_rating(score)
@@ -323,10 +323,7 @@ class ProgressTrackScreen(Screen):
         self._index = 0
         self.grid.clear_widgets()
         for routine_dict in user.routines:
-            try:
                 self.create_routine_from_list(routine_dict['average'], routine_dict['exercise'])
-            except TypeError:
-                print(routine_dict)
 
     def add_average_list(self,
                          avg_list: list[float],

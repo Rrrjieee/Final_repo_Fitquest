@@ -256,6 +256,9 @@ class MyApp(AppHandler):
             self.sound_active = False
             self.sound.stop()
 
+        global user_list_obj
+        user_list_obj.update()
+
     def send_routine(self, rout_data: RoutineDetails):
         self._routine = rout_data
         load_pose_detection.load(rout_data.exercises)
