@@ -27,6 +27,16 @@ from user.user_exercise_start import ExerciseScreen
 class SummaryScreen(Screen):
     _instance = None
 
+    @property
+    def progress_tracker(self):
+        if not hasattr(self, '_progress_tracker'):
+            self._progress_tracker  = self._app.progress_track
+        return self._progress_tracker
+    
+    @progress_tracker.setter
+    def progress_tracker(self, value):
+        return
+
     def __new__(cls, *args, **kwargs):
         if cls._instance is None:
             cls._instance = super(SummaryScreen, cls).__new__(cls, **kwargs)
@@ -132,12 +142,13 @@ class SummaryScreen(Screen):
             raise RuntimeError(
                 "No user specified! This screen should be unreachable!")
 
-        exer_list = self.exer_average['exercise']
-        avg_list = self.exer_average['average']
-        json_user = json_handler.JSONUser()
+        exer_list   = self.exer_average['exercise']
+        avg_list    = self.exer_average['average']
+        json_user   = json_handler.JSONUser()
         for i in range(len(exer_list)):
             exercise: ExerciseDetails = exer_list[i]
             avg_score: float = avg_list[i]
             user.add_exercise(exercise, avg_score)
 
         json_user.update()
+        self.progress_tracker.on_add_list()

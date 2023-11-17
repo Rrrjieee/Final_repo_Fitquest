@@ -186,17 +186,16 @@ class MyApp(AppHandler):
                 name='exercise_finished'
             )
         )
-        self._sm.add_widget(
-            user_progress_tracking.ProgressTrackScreen(
-                self._sm,
-                self,
-                self.exer_scr.exer_average,
-                self.exer_scr,
-                self.user,
-                exer_list_obj,
-                name='progress_screen'
-            )
+        self.progress_track    = user_progress_tracking.ProgressTrackScreen(
+            self._sm,
+            self,
+            self.exer_scr.exer_average,
+            self.exer_scr,
+            self.user,
+            exer_list_obj,
+            name='progress_screen'
         )
+        self._sm.add_widget(self.progress_track)
 
     def load_sound(self):
         if (len(app_config.music['main_menu']) < 1):

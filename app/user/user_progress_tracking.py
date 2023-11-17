@@ -366,12 +366,13 @@ class ProgressTrackScreen(Screen):
             return
         
         self.add_routine_from_list(out_avg_list, out_exer_list)
-        # self.grid.clear_widgets()
-        # for 
 
-    def on_pre_enter(self):
+    def on_add_list(self):
         self.add_average_list(
             self.exer_average['average'],
             self.exer_average['exercise']
         )
         self.exer_screen.reset_average()
+
+    def on_pre_enter(self):
+        self.on_add_list()
