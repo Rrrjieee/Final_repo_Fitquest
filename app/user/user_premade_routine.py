@@ -385,3 +385,5 @@ class PremadeRoutineScreen(Screen):
         if hasattr(self, 'option_container'):
             layout.remove_widget(self.option_container)
             del self.option_container
+
+        self.start_button.disabled = True
