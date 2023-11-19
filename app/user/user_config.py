@@ -30,29 +30,20 @@ user_reps_count     = 12
 user_reps_mult      = 5
 user_sets_count     = 4
 
-cooldown_ratings    = [
-    "", # Needed to make rating indices more intuitive
+cooldown_ratings    = [ # Needed to make rating indices more intuitive
 '''Significant improvement is needed in overall technique and form.
-
 Tip: Focus on mastering the correct technique before increasing intensity.''',
-
 '''Basic form is present, but consistency and control could be enhanced. 
-    
 Tip: Increase your effort and consistency for better results.''',
-
 '''Moderate performance with room for improvement in maintaining consistent form.
-    
 Tip: Work on maintaining consistent form throughout the entire exercise routine.''',
-
 '''Good job! Solid execution with generally maintained form.
-    
 Tip: Keep challenging yourself by gradually increasing resistance or intensity.''',
-    
 '''Excellent work! Consistent and controlled form throughout the exercise.'''
 ]
 toast_message       = [
     "",
-    "Congratulations!",
+    "CONGRATULATIONS!",
     "You've completed your workout routine for the day."
 ]
 

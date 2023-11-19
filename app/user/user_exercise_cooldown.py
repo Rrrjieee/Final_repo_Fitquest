@@ -6,12 +6,11 @@ from kivy.uix.screenmanager import Screen, ScreenManager, SlideTransition, FadeT
 from kivy.properties import ListProperty
 from kivy.clock import Clock
 from kivy.metrics import dp
-from kivy.graphics import Color, RoundedRectangle
+
 
 
 import user.user_config as user_config
 import admin.app_config as admin_config
-import admin.json_handler as json_handler
 from admin.admin_widgets import *
 from user.user_widgets import *
 from exercise_details import ExerciseDetails
@@ -80,11 +79,12 @@ class CooldownScreen(Screen):
         self.exer_image = exer_image  # Update the exer_image attribute
 
         self.remark_label = Label(
-            size_hint=[0.90, 0.80],
+            size_hint=[0.90, 0.70],
             text=user_config.cooldown_ratings[0],
             font_name=admin_config.font_name[2],
-            font_size=admin_config.font_size[1],
+            font_size=24,
             pos_hint={'center_x': 0.50, 'center_y': 0.45},
+            halign = 'center',
             color=[0.3333, 0.2824, 0.7216, 1]
         )
         self.remark_label.bind(size=self.remark_label.setter('text_size'))
@@ -97,7 +97,7 @@ class CooldownScreen(Screen):
             cols=self._stars,
             rows=1.0,
             size_hint=[1.0, 0.15],
-            pos_hint={'center_x': 0.50, 'center_y': 0.30}
+            pos_hint={'center_x': 0.50, 'center_y': 0.35}
         )
         exer_container.add_widget(star_container)
 
@@ -138,7 +138,7 @@ class CooldownScreen(Screen):
         average_score = exer_average['average'][-1]
         star_count = self.get_star_rating(average_score)
         star_count = 0 if star_count < 0 else star_count
-        self.remark_label.text = user_config.cooldown_ratings[star_count]
+        self.remark_label.text = user_config.cooldown_ratings[star_count-1]
         self.exer_image.source = exercise.img_path
 
         # ==================================
@@ -182,12 +182,12 @@ class CooldownScreen(Screen):
         layout.add_widget(self.dur_layout)
 
         self.dur_label      = Label(
-            size_hint       = [0.50, 0.50],
+            size_hint       = [0.40, 0.50],
             pos_hint        = {'right': 0.96, 'y': 0.05},
             text            = 'Continuing in:',
             halign          = 'right',
-            font_name       = admin_config.font_name[1],
-            font_size       = admin_config.font_size[3],
+            font_name           = admin_config.font_name[0],
+            font_size           = admin_config.font_size[3],
         )
         if not self.start_screen.has_remaining_exercises():
             self.dur_label.text    = "Finishing in:"

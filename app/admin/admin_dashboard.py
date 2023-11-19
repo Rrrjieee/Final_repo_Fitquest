@@ -1,4 +1,3 @@
-import os
 # =================================
 #       Import Kivy Widgets
 # =================================
@@ -53,7 +52,7 @@ class ExerciseTabs:
             source              = app_config.path['icons']['exercise'],
             size_hint           = [None, 0.14],
             width               = 100,
-            pos_hint            = {'right': 0.32, 'y': 0.05},
+            pos_hint            = {'right': 0.95, 'y': 0.05},
             fit_mode            = 'fill'
         )
         upload_image_btn.bind(height        = upload_image_btn.setter('width'))
@@ -127,43 +126,19 @@ class ExerciseTabs:
         add_exercise_btn    = Button(text='Add New Exercise', size_hint_y=None, height=50)
         add_exercise_btn.bind(on_release=on_exercise_defined)
         tab_content.add_widget(add_exercise_btn)
-
+        
+        
         upload_label        = Label(
             text            = 'Upload Image:',
-            size_hint       = [0.35, 0.10],
-            pos_hint        = {'x': 0.05, 'y': 0.10},
+            size_hint       = [0.35, 0.15],
+            pos_hint        = {'right': 0.85, 'y': 0.05},
             font_size       = app_config.font_size[0],
             font_name       = app_config.font_name[0],
-            halign          = 'left',
+            halign          = 'right',
             valign          = 'center'
         )
         upload_label.bind(size  = upload_label.setter('text_size'))
         tab_container.add_widget(upload_label)
-
-        file_label          = Label(
-            text            = 'File selected:',
-            size_hint       = [0.35, 0.10],
-            pos_hint        = {'x': 0.5, 'y': 0.10},
-            font_size       = app_config.font_size[0],
-            font_name       = app_config.font_name[0],
-            halign          = 'left',
-            valign          = 'center'
-        )
-        file_label.bind(size  = file_label.setter('text_size'))
-        tab_container.add_widget(file_label)
-
-        filename_label              = admin.filename_label  = Label(
-            text                    = 'None',
-            size_hint               = [0.45, 0.1],
-            pos_hint                = {'x': 0.5, 'y': 0},
-            font_size               = app_config.font_size[0],
-            font_name               = app_config.font_name[0],
-            halign                  = 'left',
-            valign                  = 'top'
-        )
-        filename_label.bind(size    = filename_label.setter('text_size'))
-        tab_container.add_widget(filename_label)
-        
         # Table (using GridLayout)
         table               = GridLayout(cols=2, row_force_default=True, row_default_height=60, spacing=[0,5])
         admin._table        = table
@@ -1054,7 +1029,7 @@ class AdminDashboard(Screen):
         tab_item    = fun(self, tab_panel)
         tab_panel.add_widget(tab_item)
 
-    # ===================================
+     # ===================================
     #       on_ methods added for
     #       the upload image button
     # ===================================
@@ -1062,35 +1037,29 @@ class AdminDashboard(Screen):
         if not hasattr(instance, 'rect'):
             return
         instance.rect.pos   = pos
-
     def on_button_size(self, instance, size):
         if not hasattr(instance, 'rect'):
             return
         instance.rect.size   = size
 
     def open_file_chooser(self, instance):
-        self.last_dir   = os.getcwd() if not hasattr(self, 'last_dir') else self.last_dir
+        import os
         file_chooser    = FileChooserIconView(
             filters     = ["*.png"],
-            path        = self.last_dir,
+            path        = os.getcwd(),
         )
         file_chooser.bind(on_submit=self.on_file_selection)
         popup               = Popup(title="Select an Image", content=file_chooser, size_hint=(None, None), size=(400, 400))
         self._active_popup  = popup
         popup.open()
-
     def on_file_selection(self, instance, selection, touch):
         if selection:
             # Update the image source with the selected file
             selected_image_path             = selection[0]
             self.upload_image_btn.source    = self._image_src   = selected_image_path
-            self.filename_label.text        = os.path.basename(selected_image_path)
-            self.last_dir                   = os.path.dirname(selected_image_path)
             self._active_popup.dismiss()
             self._active_popup              = None
-
         else:
-            self.filename_label.text        = "None"
             self.upload_image_btn.source    = app_config.path['icons']['exercise']
     
     def on_add_exer_text_clear(self, *args):
@@ -1100,7 +1069,6 @@ class AdminDashboard(Screen):
         self._dur.text                  = ""
         self._desc.text                 = ""
         self._image_src                 = ""
-        self.filename_label.text        = "None"
         self.upload_image_btn.source    = app_config.path['icons']['exercise']
 
     def add_rout_check_send(self, *args):

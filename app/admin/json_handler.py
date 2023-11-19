@@ -281,7 +281,7 @@ class JSONUser:
 
         # Parse User objects.
         self.user_list      = []
-        # Returns a singleton object, not to worry!
+        # Returns a singleton object, !
         json_exer           = JSONExercise()
         for user_dict in self.json_list:
             user            = UserDetails(user_dict['username'])

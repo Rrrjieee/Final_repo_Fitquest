@@ -20,9 +20,6 @@ app                 = {
 music               = {
     'main_menu'     : [
         'assets/audio/bss_fighting.mp3',
-        'assets/audio/chainsaw_man_op1.mp3',
-        'assets/audio/zetsubou_billy.mp3',
-        'assets/audio/ado_kura_kura.mp3',
     ],
     'play'          : False
 }
@@ -48,8 +45,7 @@ font_size = [
     48,
     64,
     82,
-    224,
-    
+    150,
 ]
 # Admin Pages
 admin_page = {

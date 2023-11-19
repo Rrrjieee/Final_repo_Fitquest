@@ -10,7 +10,7 @@ from kivy.uix.togglebutton import ToggleButton
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.widget import Widget
 from kivy.metrics import dp
-from kivy.graphics import Color, RoundedRectangle
+
 
 
 
@@ -104,15 +104,15 @@ class CustomRoutineScreen(Screen):
         self.add_widget(layout)
 
         start_btn               = Button(
-            background_normal   = user_config.button_params['bg_normal'],
-            background_color    = user_config.button_params['bg_color'],
-            color               = user_config.button_params['color'],
-            text                = 'START',
-            font_name           = admin_config.font_name[2],
-            font_size           = admin_config.font_size[0],
-            size_hint           = [0.10, 0.10],
-            pos_hint            = {'right': 0.98, 'y': 0.02},
-            disabled            = True
+            background_normal   =user_config.button_params['bg_normal'],
+            background_color    =user_config.button_params['bg_color'],
+            color               =user_config.button_params['color'],
+            text                ='START',
+            font_name           =admin_config.font_name[1],
+            font_size           =admin_config.font_size[3],
+            size_hint           =[0.10, 0.10],
+            pos_hint            ={'right': 0.98, 'y': 0.02},
+            disabled            =True
         )
         layout.add_widget(start_btn)
         self.start_button = start_btn
@@ -357,8 +357,9 @@ class CustomRoutineScreen(Screen):
             routine = self._choice['routine']
             if routine is None:
                 routine     = RoutineDetails(
-                    name    = "",
-                    desc    = "A customized routine that grants flexibility of choice for users.",
+                    # name    ="Custom Routine",
+                    name="",
+                    desc    ="A customized routine that grants flexibility of choice for users.",
                     exercises=[]
                 )
                 self._choice['routine'] = routine
@@ -386,13 +387,13 @@ class CustomRoutineScreen(Screen):
             del self.exer_list_layout
 
         self.exer_list_layout   = ScrollableOption(
-            size_hint           = [0.34, 1.00],
-            pos_hint            = {'x': 0.66, 'y': 0.0},
+            size_hint           =[0.34, 1.00],
+            pos_hint            ={'x': 0.66, 'y': 0.0},
             font_name           = admin_config.font_name[1],
             font_size           = admin_config.font_size[3],
-            cols                = 1,
-            text                = 'Exercise List:',
-            spacing             = 5,
+            cols                =1,
+            text                ='Exercise List:',
+            spacing             =5,
         )
         self.exer_list_layout.get_grid_container().size_hint = [0.75, 0.70]
         self.child_layout.add_widget(self.exer_list_layout)
@@ -501,6 +502,7 @@ class CustomRoutineScreen(Screen):
 
         if hasattr(self, 'exer_list_layout'):
             self.child_layout.remove_widget(self.exer_list_layout)
+            # self.exer_list_layout.clear_widgets()
             del self.exer_list_layout
 
         # Clear out routine if present.
@@ -521,8 +523,11 @@ class CustomRoutineScreen(Screen):
             del self.reps_options
             del self.sets_options
             del self.child_layout
+
+        # # Clear the screen once finalized.
+        # if self._choice['finalized'] and hasattr(self, 'exer_list_layout'):
+        #     self.child_layout.remove_widget(self.exer_list_layout)
+        #     del self.exer_list_layout
             
         self.clear_data()
-        # Uncomment the line below to handle the automatic disabling
-        # of the start button.
-        # self.check_start_state()
+        self.check_start_state()

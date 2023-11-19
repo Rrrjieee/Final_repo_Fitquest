@@ -1,3 +1,4 @@
+# Import necessary Kivy modules and custom modules
 from kivy.app import App
 from kivy.uix.image import Image
 from kivy.uix.boxlayout import BoxLayout
@@ -7,7 +8,6 @@ from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.screenmanager import ScreenManager, Screen, SlideTransition
-from kivy.graphics import Color, Rectangle, RoundedRectangle, Rotate, PushMatrix, PopMatrix
 from kivy.animation import Animation
 from kivy.metrics import dp
 
@@ -21,16 +21,18 @@ from exercise_details import ExerciseDetails
 
 from admin.admin_behavior import BackButtonDispatch
 
-
+# Define the PremadeRoutineScreen class, which represents a screen in the Kivy app
 class PremadeRoutineScreen(Screen):
     _instance = None
 
+    # Singleton pattern to ensure only one instance of the class is created
     def __new__(cls, *args, **kwargs):
         if cls._instance is None:
             cls._instance = super(PremadeRoutineScreen,
                                   cls).__new__(cls, **kwargs)
         return cls._instance
-
+    
+    # Initialize the PremadeRoutineScreen instance
     def __init__(self, sm: ScreenManager, app: App, **kwargs):
         super().__init__(**kwargs)
         self._choice = {
@@ -67,7 +69,7 @@ class PremadeRoutineScreen(Screen):
         # ===============================
         cabaret_label   = BGLabel(
             text        ='READY-MADE ROUTINE',
-            #font_name   =admin_config.font_name[0],
+            font_name   =admin_config.font_name[0],
             font_size   =admin_config.font_size[3],
             color       =user_config.button_params['color'],
             size_hint   =[0.44, 0.12],
@@ -95,13 +97,13 @@ class PremadeRoutineScreen(Screen):
             color               =user_config.button_params['color'],
             text                ='BACK',
             font_name           =admin_config.font_name[1],
-            font_size           =admin_config.font_size[1],
+            font_size           =admin_config.font_size[3],
             size_hint           =[0.10, 0.10],
             pos_hint            ={'x': 0.02, 'y': 0.02}
         )
         layout.add_widget(back_btn)
         BackButtonDispatch.on_release(
-            back_btn, 'user_routine_selection', self._sm, 'right')
+        back_btn, 'user_routine_selection', self._sm, 'right')
         self.add_widget(layout)
 
         start_btn               = Button(
@@ -110,7 +112,7 @@ class PremadeRoutineScreen(Screen):
             color               =user_config.button_params['color'],
             text                ='START',
             font_name           =admin_config.font_name[1],
-            font_size           =admin_config.font_size[0],
+            font_size           =admin_config.font_size[3],
             size_hint           =[0.10, 0.10],
             pos_hint            ={'right': 0.98, 'y': 0.02},
             disabled            =True
@@ -206,6 +208,7 @@ class PremadeRoutineScreen(Screen):
             btn_layout.add_widget(btn_exercise_bg)
             btn_exercise_bg.bg_color.rgba = [0.7, 0.7, 0.7, 1]
 
+    
             btn_desc_bg = FloatLayout(
                 size_hint=[0.8, 0.4],
                 pos_hint={'x': 0.2, 'y': 0}
@@ -222,24 +225,26 @@ class PremadeRoutineScreen(Screen):
                 pos_hint        ={'center_x': 0.5, 'center_y': 0.5},
                 text            =routine.routine_name,
                 font_size       =admin_config.font_size[2],
-                font_name       =admin_config.font_name[2],
+                font_name       =admin_config.font_name[1],
             )
             btn_routine_bg.add_widget(btn_routine_label)
             KivyPropHandler.on_text_size_change(btn_routine_label, 0.5)
             # btn_routine_label.bind(text_size=btn_routine_label.setter('size'))
-
+            
+            #Description layout
             btn_desc_label  = Label(
-                width       =btn_desc_bg.height,
-                height      =btn_desc_bg.width,
-                pos_hint    ={'center_x': 0.5, 'center_y': 0.5},
-                text        =routine.routine_description,
-                font_size   =admin_config.font_size[1],
+                width       =   btn_desc_bg.height,
+                height      =   btn_desc_bg.width,
+                pos_hint    =   {'center_x': 0.5, 'center_y': 0.5},
+                text        =   routine.routine_description,
+                font_size   =   admin_config.font_size[0],
+                font_name   =   admin_config.font_name[0],
+
                 color       =[0, 0, 0, 1]
             )
             btn_desc_bg.add_widget(btn_desc_label)
-            KivyPropHandler.on_text_size_change(btn_desc_label, 0.72)
-            KivyPropHandler.on_font_size_change(
-                btn_desc_label, 0.06, 1.1, True)
+            # KivyPropHandler.on_text_size_change(btn_desc_label, 0.72)
+            # KivyPropHandler.on_font_size_change(btn_desc_label, 0.06, 1.1, True)
             # btn_desc_label.bind(text_size=btn_desc_label.setter('size'))
 
             # =======================================
@@ -247,8 +252,8 @@ class PremadeRoutineScreen(Screen):
             #         make labels now
             # =======================================
             btn_scroll_cont = FloatLayout(
-                size_hint=[0.60, 1.0],
-                pos_hint={'center_x': 0.5, 'center_y': 0.5},
+                size_hint=[0.70, 1.0],
+                pos_hint={'center_x': 0.5, 'center_y': 0.5}
             )
             btn_exercise_bg.add_widget(btn_scroll_cont)
 
@@ -262,7 +267,7 @@ class PremadeRoutineScreen(Screen):
             btn_grid = GridLayout(
                 size_hint_x=None,
                 rows=1,
-                col_default_width=100,
+                col_default_width=220,
             )
             btn_scroll.add_widget(btn_grid)
             btn_grid.bind(minimum_width=btn_grid.setter('width'))
@@ -279,7 +284,7 @@ class PremadeRoutineScreen(Screen):
                 exercise: ExerciseDetails
                 exer_bg = FloatLayout(
                     size_hint=[None, 1.0],
-                    width=100,
+                    width=150,
                 )
                 btn_grid.add_widget(exer_bg)
 
@@ -348,23 +353,23 @@ class PremadeRoutineScreen(Screen):
                 button.bind(on_release=on_btn_click)
             on_btn_factory(button, i, self, button_layer)
 
-        if valid_rout_counter < 1:
-            option_container.bg_color.rgba = [0.5, 0.5, 0.5, 1]
-            option_container.border_size = 0
-            option_container.clear_widgets()
+        # if valid_rout_counter < 1:
+        #     option_container.bg_color.rgba = [0.5, 0.5, 0.5, 1]
+        #     option_container.border_size = 0
+        #     option_container.clear_widgets()
 
-            # =======================================
-            #         Create a label indicating
-            #         that we don't have any
-            #         valid default routines.
-            # =======================================
-            warning_label = Label(
-                size_hint=[1.0, 1.0],
-                pos_hint={'x': 0, 'y': 0},
-                text="Sorry, no default routines can be found.\n" +
-                "Please go back and select custom routine.",
-            )
-            option_container.add_widget(warning_label)
+        #     # =======================================
+        #     #         Create a label indicating
+        #     #         that we don't have any
+        #     #         valid default routines.
+        #     # =======================================
+        #     warning_label = Label(
+        #         size_hint=[1.0, 1.0],
+        #         pos_hint={'x': 0, 'y': 0},
+        #         # text="Sorry, no default routines can be found.\n" +
+        #         # "Please go back and select custom routine.",
+        #     )
+        #     option_container.add_widget(warning_label)
 
     def on_pre_enter(self):
         self.draw_routines()
@@ -385,5 +390,3 @@ class PremadeRoutineScreen(Screen):
         if hasattr(self, 'option_container'):
             layout.remove_widget(self.option_container)
             del self.option_container
-
-        self.start_button.disabled = True
