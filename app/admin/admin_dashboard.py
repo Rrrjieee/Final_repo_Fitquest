@@ -1010,17 +1010,26 @@ class RoutineTabs:
             right_layout.add_widget(save_btn)
             def req_update(instance):
                 nonlocal admin
-                instance            = admin._manage_params['exercise']
-                exercise            = instance.exercise if instance else None
+                instance                    = admin._manage_params['exercise']
+                routine                     = admin._manage_params['routine']
+                if routine is not None:
+                    routine.routine_name        = admin._manage_rout_elem['name'].text
+                    routine.routine_description = admin._manage_rout_elem['description'].text
+
+                exercise                    = instance.exercise if instance else None
                 if exercise is not None:
-                    exercise.reps   = int(admin._manage_rout_elem['reps'].text)
-                    exercise.sets   = int(admin._manage_rout_elem['sets'].text)
+                    exercise.reps               = int(admin._manage_rout_elem['reps'].text)
+                    exercise.sets               = int(admin._manage_rout_elem['sets'].text)
+                    print(f"Changes saved to exercise ({hex(id(exercise))})={exercise.name}")
+                    
                 # Successful save popup
                 success_popup = Popup(title='Success',
                                     content=Label(text='Routine successfully saved.'),
                                     size_hint=(None, None), size=(300, 200))
                 success_popup.open()
                 admin.rout_list.update()
+                admin.rout_list.update(exercise)
+
             save_btn.bind(on_release = req_update)
             # Add exercise list
             for exercise in admin.exer_list.extract_list():
@@ -1271,12 +1280,14 @@ class AdminDashboard(Screen):
         exercise                    = self.exer_list.get_exercise(selection.text).copy()
         cur_routine: RoutineDetails = self._manage_params['routine']
         cur_routine                 = cur_routine.routine if cur_routine else None
-        if cur_routine:
-            cur_routine.add_exercise(exercise)
+
+        if cur_routine is None:
+            return
+        cur_routine.add_exercise(exercise)
         
         # Add new exercise to grid
         inner_grid                  = self._manage_rout_elem['inner_grid']
-        self.create_exercise_button(inner_grid, exercise)
+        self.create_exercise_button(inner_grid, cur_routine, exercise)
         Clock.schedule_once(dropdown.clear_option, -1)
     def on_select_exercise(self, instance):
         prev_instance                           = self._manage_params['exercise']
@@ -1340,7 +1351,7 @@ class AdminDashboard(Screen):
             prev_routine.routine_name           = self._manage_rout_elem['name'].text
             prev_routine.routine_description    = self._manage_rout_elem['description'].text
         self.manage_routine_fill_exercises(routine)
-    def create_exercise_button(self, inner_grid, exercise: ExerciseDetails):
+    def create_exercise_button(self, inner_grid, routine: RoutineDetails, exercise: ExerciseDetails):
         grid_entry              = GridLayout(
             cols                = 2,
             rows                = 1,
@@ -1355,6 +1366,7 @@ class AdminDashboard(Screen):
         )
         grid_entry.add_widget(grid_entry.exer_button)
         grid_entry.exer_button.exercise         = exercise
+        grid_entry.exer_button.routine          = routine
         grid_entry.exer_button.bind(on_release  = self.on_select_exercise)
         grid_entry.del_button   = ImageButton2(
             size_hint           = [0.2, None],
@@ -1378,7 +1390,7 @@ class AdminDashboard(Screen):
         inner_grid                          = rout_elements['inner_grid']
         inner_grid.clear_widgets()
         for exercise in iter(routine):
-            self.create_exercise_button(inner_grid, exercise)
+            self.create_exercise_button(inner_grid, routine, exercise)
         self._last_routine                  = routine
     def clear_routine_table(self, clear_data: bool = True):
         rout_elements                       = self._manage_rout_elem
@@ -1420,5 +1432,6 @@ class AdminDashboard(Screen):
         
     def back_btn_pressed(self, instance):
         self.on_add_exer_text_clear()
+        self.clear_routine_table()
         self.manager.transition = SlideTransition(direction="right")
         self.manager.current    = 'main_screen'

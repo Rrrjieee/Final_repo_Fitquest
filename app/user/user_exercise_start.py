@@ -12,7 +12,6 @@ from kivy.clock import Clock
 from kivy.metrics import dp
 from threading import Thread
 
-
 from kivy.graphics.texture import Texture
 from typing import Callable
 from user.pose_detection.return_code import ReturnCode
@@ -30,6 +29,8 @@ import cv2
 import numpy as np
 import PIL
 import mediapipe as mp
+import time
+
 from mediapipe.python.solutions import drawing_utils as mp_drawing_utils
 from math import ceil
 
@@ -285,6 +286,10 @@ class ExerciseScreen(Screen):
         return score
 
     def on_camera_update(self, tick):
+        if not self._active:
+            # Do not update camera while it isn't active.
+            return
+        
         while True:
             if (not hasattr(self, '_loaded')) or (not self._loaded):
                 self._loaded = True
@@ -389,6 +394,10 @@ class ExerciseScreen(Screen):
             except:
                 pass
 
+        if self._sm.current == 'exercise_start':
+            time.sleep(self.tick_rate)
+            self.process_feed()
+
     def load_exercise(self, deduct: bool = True) -> ExerciseDetails:
         rout_list = self._app.post_routine()
         rout_list: RoutineDetails
@@ -485,9 +494,6 @@ class ExerciseScreen(Screen):
     def show_exit_confirmation(self, instance):
         # Pause camera updates and processing
         self._active = False
-        self.cam_monitor.cancel()
-        del self.cam_monitor
-
         modal_view = ModalView(size_hint=(None, None), size=(400, 200))
         content = BoxLayout(orientation='vertical', padding=10)
         text = Label(text="Do you want to exit this routine?")
@@ -510,18 +516,27 @@ class ExerciseScreen(Screen):
         self.exit_confirmation_popup.open()
 
     def confirm_exit(self, instance):
+        self._active = False
+        self.toggle_augment_state(False)
+        self.cam_monitor.cancel()
+        del self.cam_monitor
+
         self.dismiss_exit_confirmation(instance)
         self.redirect_to_routine_selection()
 
     def dismiss_exit_confirmation(self, instance):
         if self.exit_confirmation_popup is not None:
             self.exit_confirmation_popup.dismiss()
-            self.active_exercise = None
-           # Resume camera updates and processing
-            self._active = True
-            self.cam_monitor = Clock.schedule_interval(
-                self.on_camera_update, self.tick_rate)
-            self.exit_confirmation_popup = None  # Reset the reference to None
+            self.exit_confirmation_popup    = None
+
+        print("Dismissing exit confirmation")
+        self._active = True
+        # The lines below interfere with the entire process.
+        # self.active_exercise = None
+        # # Resume camera updates and processing
+        # self.cam_monitor = Clock.schedule_interval(
+        #     self.on_camera_update, self.tick_rate)
+        # self.exit_confirmation_popup = None  # Reset the reference to None
 
     def redirect_to_routine_selection(self):
         # Handle redirection to the specific screen or continue
