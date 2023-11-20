@@ -398,7 +398,6 @@ class ExerciseScreen(Screen):
             self.process_feed()
             return
 
-        print("Stopping feed")
         self.img_proc_thread    = None
 
     def load_exercise(self, deduct: bool = True) -> ExerciseDetails:
