@@ -45,7 +45,6 @@ class BackButtonDispatch:
                 cls.back_button_callback(sm, destination, direction)
         button.bind(on_release=callback)
 
-
 class ExerciseScreen(Screen):
     _instance = None
     tick_rate = NumericProperty(0.016)
@@ -365,7 +364,7 @@ class ExerciseScreen(Screen):
         self.img_proc_thread.start()
 
     def process_feed(self):
-        while self._active:
+        while (self._sm.current == 'exercise_start') and (self._active):
             if not hasattr(self, '_cv_texture'):
                 continue
 
@@ -397,6 +396,10 @@ class ExerciseScreen(Screen):
         if self._sm.current == 'exercise_start':
             time.sleep(self.tick_rate)
             self.process_feed()
+            return
+
+        print("Stopping feed")
+        self.img_proc_thread    = None
 
     def load_exercise(self, deduct: bool = True) -> ExerciseDetails:
         rout_list = self._app.post_routine()
@@ -463,7 +466,7 @@ class ExerciseScreen(Screen):
         self.count_label.text = str(value)
         if ((value >= self.reps) and
             (self.reps > 0) and
-                (self._active)):
+            (self._active)):
             self.to_next_screen()
 
     def on_reps(self, instance, value):
@@ -478,7 +481,10 @@ class ExerciseScreen(Screen):
         return (rout_list.exercises[0].sets > 0) or (len(rout_list.exercises) > 1)
 
     def to_next_screen(self):
-        self._active = False
+        self._active    = False
+        if self.img_proc_thread is not None:
+            self.img_proc_thread.join(0.0)
+            self.img_proc_thread    = None
 
         self.exer_average['exercise'].append(self.active_exercise)
         try:
