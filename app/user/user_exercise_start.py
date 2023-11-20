@@ -518,8 +518,6 @@ class ExerciseScreen(Screen):
     def confirm_exit(self, instance):
         self._active = False
         self.toggle_augment_state(False)
-        self.cam_monitor.cancel()
-        del self.cam_monitor
 
         self.dismiss_exit_confirmation(instance)
         self.redirect_to_routine_selection()
