@@ -527,7 +527,6 @@ class ExerciseScreen(Screen):
             self.exit_confirmation_popup.dismiss()
             self.exit_confirmation_popup    = None
 
-        print("Dismissing exit confirmation")
         self._active = True
         # The lines below interfere with the entire process.
         # self.active_exercise = None
