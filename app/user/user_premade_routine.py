@@ -138,7 +138,6 @@ class PremadeRoutineScreen(Screen):
         option_container    = BGFloatLayout(
             size_hint       =[0.85, 0.58],
             pos_hint        ={'center_x': 0.5, 'center_y': 0.45}
-            
         )
         layout.add_widget(option_container)
         option_container.border_size = 5

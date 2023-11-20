@@ -198,7 +198,7 @@ class JSONRoutine:
             )
             self.rout_list.append(rout_object)
 
-    def update(self):
+    def update(self, debug_exer_obj: None | JSONExercise = None):
         content = []
         for rout in self.rout_list:
             rout_dict   = {
@@ -208,6 +208,11 @@ class JSONRoutine:
             }
 
             for exercise in rout.exercises:
+                if debug_exer_obj == exercise:
+                    print(f"JSONRoutine.update() >> New parameters ({exercise.name}, {exercise.reps}, {exercise.sets})")
+                else:
+                    print(f"JSONRoutine.update() >> Existing parameters for exercise ({hex(id(exercise))}): ({exercise.name}, {exercise.reps}, {exercise.sets})")
+                
                 exer_dict   = {
                     "name"  : exercise.name,
                     "sets"  : exercise.sets,
