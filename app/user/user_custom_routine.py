@@ -122,13 +122,18 @@ class CustomRoutineScreen(Screen):
             self._app.send_routine(self._choice['routine'])
             self._choice['routine'] = None
 
+        '''
+        pre_trans_effect()
+        new_screen -> on_pre_enter()
+        post_trans_effect()
+        '''
         BackButtonDispatch.on_release(start_btn, 'exercise_pre_start', self._sm, None,
                                       pre_trans_effect=on_routine_proceed)
 
     def can_enable_insert_btn(self):
         return ((self._choice['exercise'] is not None) and
-                (self._choice['reps'] != 0) and
-                (self._choice['sets'] != 0))
+                (self._choice['reps'] > 0) and
+                (self._choice['sets'] > 0))
 
     def clear_data(self):
         if (not hasattr(self, 'insert_btn')):

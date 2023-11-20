@@ -1302,7 +1302,6 @@ class AdminDashboard(Screen):
         instance                        = self._manage_params['exercise']
         cur_exercise: ExerciseDetails   = instance.exercise if instance else None
         if selection is None:
-            print("Disabling fields")
             self._manage_rout_elem['reps'].text     = \
             self._manage_rout_elem['sets'].text     = ""
             self._manage_rout_elem['reps'].disabled = \
@@ -1319,8 +1318,6 @@ class AdminDashboard(Screen):
         cur_option                      = instance.parent
         cur_exercise: ExerciseDetails   = instance.exercise
         inner_grid                      = self._manage_rout_elem['inner_grid']
-        print(f"Current routine: {cur_routine.routine_name}")
-        print(f"Current exercise: {cur_exercise.name}")
         cur_routine.remove_exercise(cur_exercise)
         if self._manage_params['exercise']  == instance:
             change_dropdown: DropdownOption = self._manage_rout_elem['change_dropdown']
