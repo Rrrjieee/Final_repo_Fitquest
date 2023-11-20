@@ -49,27 +49,31 @@ _app_data = {
 
 
 class MainScreen(Screen):
+    #this initialize the screen object
+    #**kwargs is keyword argument that are valid within the superclass constructor function
     def __init__(self, is_admin: bool = True, **kwargs):
+        #we just call the super class first because its necessary
         super().__init__(**kwargs)
 
-        # Add Main layout
+        #  Main layout
         layout = FloatLayout(size=(300, 300))
 
-        # Add background image
+        # background image
         bg = Image(source=app_config.app['background'], fit_mode="cover")
         layout.add_widget(bg)
 
-        # Add Logo
+        # Logo
         logo = Image(source=app_config.app['logo'], pos_hint={
                      'center_x': 0.5, 'center_y': 0.8}, size_hint=(0.3, 0.3), fit_mode="contain")
         layout.add_widget(logo)
 
-        # Add Buttons layout
+        #  Buttons layout
         buttons = BoxLayout(orientation='vertical', spacing=10, size_hint=(
             0.40, 0.35), pos_hint={'center_x': 0.5, 'center_y': 0.4})
         if not is_admin:
             buttons.size_hint_y = 0.175
-            buttons.pos_hint['center_y'] = 0.475
+            # buttons.size_hint_x = 0.200
+            buttons.pos_hint['center_y'] = 0.300
 
     # Create 'USER' button
         user_btn = RoundedButton(
@@ -88,7 +92,7 @@ class MainScreen(Screen):
      # Update button text for non-admin users
 
         if (not is_admin):
-            user_btn.text = "START!"
+            user_btn.text = "START"
 
     # Create 'ADMIN' button if user is an admin
         if is_admin:

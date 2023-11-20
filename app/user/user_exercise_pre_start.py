@@ -12,7 +12,6 @@ from kivy.metrics import dp
 # Importing configuration and widget modules
 import user.user_config as user_config
 import admin.app_config as admin_config
-import admin.json_handler as json_handler
 from admin.admin_widgets import *
 from user.user_widgets import *
 from exercise_details import ExerciseDetails

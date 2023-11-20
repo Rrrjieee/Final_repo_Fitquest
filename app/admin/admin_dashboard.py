@@ -14,7 +14,9 @@ from kivy.uix.tabbedpanel import TabbedPanel, TabbedPanelItem
 from kivy.animation import Animation
 from kivy.uix.filechooser import FileChooserIconView
 from kivy.uix.popup import Popup
+from kivy.uix.widget import Widget
 from kivy.metrics import dp
+import json
 
 from kivy.clock import Clock
 
@@ -732,6 +734,64 @@ class RoutineTabs:
         root_layout.add_widget(base_layout)
         admin._manage_rout_elem['elem_base']    = base_layout
 
+        
+        def delete_selected_routine(confirm_popup):
+            routines_grid = admin._manage_rout_elem['grid']
+            selected_routine = admin._manage_params['routine']
+
+            # Remove the routine from the UI
+            for child in list(routines_grid.children):
+                if child.text == selected_routine.text:  # Assuming the text represents the routine name
+                    routines_grid.remove_widget(child)
+                    break
+
+            # Remove the routine from the JSON file
+            if selected_routine is not None:
+                with open('routines.json', 'r+') as file:
+                    routines_data = json.load(file)
+                    routines_data = [routine for routine in routines_data if routine['routine_name'] != selected_routine.text]
+                    file.seek(0)  # Reset the file pointer to the beginning
+                    json.dump(routines_data, file, indent=4)
+                    file.truncate()  # Remove any remaining content after the updated data
+
+            # Additionally, perform other actions related to routine deletion here
+            admin._manage_params['routine'] = None  # Reset the selected routine
+
+            confirm_popup.dismiss()  # Close the confirmation popup
+
+            # Creating success popup
+            success_popup = Popup(title='Success',
+                                content=Label(text='Routine successfully deleted.'),
+                                size_hint=(None, None), size=(400, 300))
+            success_popup.open()
+
+
+        def delete_routine():
+            selected_routine = admin._manage_params['routine']
+            if selected_routine is not None:
+                confirm_popup = Popup(title='Confirm Deletion',
+                                      size_hint=(None, None), size=(400, 300))
+
+                content_layout = GridLayout(cols=1, spacing=10)
+                confirm_message = Label(text='Are you sure you want to delete this routine?')
+
+                button_layout = GridLayout(cols=2, spacing=10, size_hint_y=None, height=50)
+                yes_button = Button(text='Yes', size_hint_x=None, width=100)
+                no_button = Button(text='No', size_hint_x=None, width=100)
+
+                yes_button.bind(on_press=lambda instance: delete_selected_routine(confirm_popup))
+                no_button.bind(on_press=confirm_popup.dismiss)
+
+                button_layout.add_widget(yes_button)
+                button_layout.add_widget(no_button)
+
+                content_layout.add_widget(confirm_message)
+                content_layout.add_widget(button_layout)
+
+                confirm_popup.content = content_layout
+                confirm_popup.open()
+
+
         #   ====================================
         #             Left Layout
         #   ====================================
@@ -790,6 +850,17 @@ class RoutineTabs:
             selection_scroll.add_widget(select_grid)
             select_grid.bind(minimum_height         = select_grid.setter('height'))
             admin._manage_rout_elem['grid']         = select_grid
+
+            # Delete button
+            del_routine_button = Button(
+                text="Delete Routine",
+                size_hint=[None, None],
+                size=(150, 50),
+                pos_hint={'x': 0.3, 'center_y': 0.15}
+            )
+            del_routine_button.bind(on_press=lambda instance: delete_routine())
+            left_layout.add_widget(del_routine_button)
+
         def right_layout_elements(admin, right_layout):
             routine_grid    = GridLayout(
                 cols        = 2,
@@ -944,6 +1015,11 @@ class RoutineTabs:
                 if exercise is not None:
                     exercise.reps   = int(admin._manage_rout_elem['reps'].text)
                     exercise.sets   = int(admin._manage_rout_elem['sets'].text)
+                # Successful save popup
+                success_popup = Popup(title='Success',
+                                    content=Label(text='Routine successfully saved.'),
+                                    size_hint=(None, None), size=(300, 200))
+                success_popup.open()
                 admin.rout_list.update()
             save_btn.bind(on_release = req_update)
             # Add exercise list

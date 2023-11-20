@@ -67,8 +67,7 @@ class UserDetails:
     def get_exercise_list(self) -> list[dict[str, str]]:
         '''
         Creates a new list that contains all registered
-        exercises. Cleaning up the list object is up to
-        the user.
+        exercises. 
 
         Dictionary object fields:
             'name'  : str   - used to point towards the relevant ExerciseDetails

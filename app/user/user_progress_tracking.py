@@ -41,6 +41,8 @@ class ProgressTrackScreen(Screen):
     _instance = None
     multiple_tiles_per_node = BooleanProperty(True)
 
+    # method in the provided code implements a Singleton pattern by ensuring that only one instance of the ProgressTrackScreen class is created, 
+    # and it returns the existing instance if it has already been instantiated
     def __new__(cls, *args, **kwargs):
         if cls._instance is None:
             cls._instance = super(ProgressTrackScreen, cls).__new__(
@@ -253,8 +255,8 @@ class ProgressTrackScreen(Screen):
         rout_label.bind(size=BoundMethods.on_instance_size)
 
         grid_container = FloatLayout(
-            size_hint=[0.7, 0.8],
-            pos_hint={'right': 0.9, 'center_y': 0.5}
+            size_hint=[0.8, 0.8],
+            pos_hint={'right': 1.0, 'center_y': 0.5}
         )
         base_widget.add_widget(grid_container)
 

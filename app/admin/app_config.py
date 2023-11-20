@@ -5,7 +5,7 @@ path                = {
     'icons'         : {
         'delete'    : 'assets/images/icon_trash_bin.png',
         'star'      : 'assets/images/icon_star.png',
-        'exercise'  : 'assets/images/icon_exercise.png'
+        'exercise'  : 'assets/images/icon_exercise.jpg'
     }
 }
 popup               = {

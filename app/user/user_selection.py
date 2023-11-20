@@ -22,13 +22,14 @@ from admin.admin_behavior import BackButtonDispatch
 
 class UserScreen(Screen):
 
-    # Singleton pattern to ensure only one instance of UserScreen. This means that only one instance of user can exist
-    # _instance = None
+    # Singleton pattern to ensure only one instance of UserScreen. 
+    # This means that you can only have one object assiociated with one class that given any point of time 
+    _instance = None
 
-    # def __new__(cls, *args, **kwargs):
-    #     if cls._instance is None:
-    #         cls._instance = super(UserScreen, cls).__new__(cls, **kwargs)
-    #     return cls._instance
+    def __new__(cls, *args, **kwargs):
+        if cls._instance is None:
+            cls._instance = super(UserScreen, cls).__new__(cls, **kwargs)
+        return cls._instance
 
     # Initialize the UserScreen class
     def __init__(self, sm: ScreenManager, user_handler: JSONUser, **kwargs):
@@ -166,9 +167,9 @@ class UserScreen(Screen):
     #                   User API
     # =====================================================
     def get_choice(self) -> UserDetails | None:
-        '''
-        Returns the currently active user (as determined in on_icon_release)
-        '''
+        
+        #Returns the currently active user (as determined in on_icon_release)
+        
         return self._choice
 
     # def get_user_name(self, choice=None):
