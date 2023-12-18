@@ -334,7 +334,8 @@ class MyApp(AppHandler):
 
         self._routine_copy = []
         for elem in rout_data.exercises:
-            self._routine_copy.append(elem)
+            elem_cpy    = elem.copy()
+            self._routine_copy.append(elem_cpy)
 
 # Method to get a copy of the routine data
     def post_routine(self, get_copy: bool = False) -> RoutineDetails:
