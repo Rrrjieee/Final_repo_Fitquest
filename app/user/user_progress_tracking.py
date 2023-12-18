@@ -16,6 +16,7 @@ import admin.json_handler as json_handler
 from admin.admin_widgets import *
 from user_details import UserDetails
 from exercise_details import ExerciseDetails
+from routine_details import RoutineDetails
 
 from admin.admin_behavior import BackButtonDispatch
 from user.user_selection import UserScreen
@@ -195,7 +196,8 @@ class ProgressTrackScreen(Screen):
     def create_routine_from_list(self,
                                  rout_name: str,
                                  avg_list: list[float],
-                                 exer_list: list[ExerciseDetails]):
+                                 exer_list: list[ExerciseDetails],
+                                 rout_copy: list[RoutineDetails]):
 
         # if score below 4 will not be displayed in progress tracking
         # for score in avg_list:
@@ -285,47 +287,87 @@ class ProgressTrackScreen(Screen):
         for i in range(len(exer_list)):
             exercise, score = exer_list[i], avg_list[i]
             # Coerce exercise into an ExerciseDetails object if need be.
-            exercise = exercise if isinstance(
-                exercise, ExerciseDetails) else self.json_exer.get_exercise(exercise)
+            exercise        = exercise if isinstance(exercise, ExerciseDetails) \
+                                   else self.json_exer.get_exercise(exercise)
 
-            score = 1 if score > 1 else (0 if score < 0 else score)
+            score           = 1 if score > 1 else (0 if score < 0 else score)
 
             # if score below 4 will not be displayed in progress tracking
             # if score < .6:
             #     continue
 
-            stars = CooldownScreen.star_rating(score)
+            stars           = CooldownScreen.star_rating(score)
 
-            exer_layout = FloatLayout(
-                size_hint=[None, 1.0],
-                pos_hint={'x': 0, 'y': 0}
+            exer_layout     = FloatLayout(
+                size_hint   =[None, 1.0],
+                pos_hint    ={'x': 0, 'y': 0}
             )
             grid.add_widget(exer_layout)
 
-            exer_image = Image(
-                source=exercise.img_path,
-                size_hint=[None, None],
-                size=[128, 128],
-                pos_hint={'center_x': 1.0, 'center_y': 0.7}
+            exer_image      = Image(
+                source      =exercise.img_path,
+                size_hint   =[None, None],
+                size        =[128, 128],
+                pos_hint    ={'center_x': 1.0, 'center_y': 0.7}
             )
             exer_layout.add_widget(exer_image)
             # exer_image.bind(height  = exer_image.setter('width'))
 
-            exer_grid = GridLayout(
-                size_hint=[None, 0.2],
-                pos_hint={'x': 0, 'y': 0},
-                rows=1,
-                spacing=[5, 0],
+            exer_label_grid = GridLayout(
+                size_hint   = [None, 0.2],
+                pos_hint    = {'x': 0, 'y': 0.2},
+                rows        = 1,
+                width       = 200,
+                spacing     = [10, 0],
+            )
+            exer_layout.add_widget(exer_label_grid)
+            
+            # =====================================
+            #       Labels within exer_label_grid
+            # =====================================
+            exer_reps       = Label(
+                size_hint   = [1.0, 1.0],
+                pos_hint    = {'center_x': 0.5, 'center_y': 0.5},
+                font_name   = admin_config.font_name[0],
+                font_size   = 20,
+                halign      = 'center',
+                valign      = 'center',
+            )
+            exer_reps.text  = f'Reps: {rout_copy[i].reps}'
+            # exer_reps.text  = f'Christmas bonus'
+            exer_reps.bind(text_size    = exer_reps.setter("size"))
+            exer_label_grid.add_widget(exer_reps)
+
+            exer_sets       = Label(
+                size_hint   = [1.0, 1.0],
+                pos_hint    = {'center_x': 0.5, 'center_y': 0.5},
+                text        = f'Sets: {rout_copy[i].sets}',
+                font_name   = admin_config.font_name[0],
+                font_size   = 20,
+                halign      = 'center',
+                valign      = 'center',
+            )
+            exer_sets.bind(text_size    = exer_sets.setter("size"))
+            exer_label_grid.add_widget(exer_sets)
+            
+            # =====================================
+            #    End Labels within exer_label_grid
+            # =====================================
+            exer_grid       = GridLayout(
+                size_hint   =[None, 0.2],
+                pos_hint    ={'x': 0, 'y': 0},
+                rows        =1,
+                spacing     =[5, 0],
             )
             exer_layout.add_widget(exer_grid)
             exer_layout.bind(width=exer_grid.setter('width'))
 
             for i in range(1, 6):
-                star_icon = Image(
-                    source=app_config.path['icons']['star'],
-                    size_hint=[None, None],
-                    size=[40, 40],
-                    pos_hint={'center_x': 0.5, 'center_y': 0.5}
+                star_icon       = Image(
+                    source      =app_config.path['icons']['star'],
+                    size_hint   =[None, None],
+                    size        =[40, 40],
+                    pos_hint    ={'center_x': 0.5, 'center_y': 0.5}
                 )
                 exer_grid.add_widget(star_icon)
                 star_icon.bind(height=star_icon.setter('width'))
@@ -354,7 +396,11 @@ class ProgressTrackScreen(Screen):
         self.grid.clear_widgets()
         for routine_dict in user.routines:
             self.create_routine_from_list(
-                routine_dict['name'], routine_dict['average'], routine_dict['exercise'])
+                routine_dict['name'],
+                routine_dict['average'],
+                routine_dict['exercise'],
+                self._app.post_routine(get_copy = True)
+            )
 
     def add_average_list(self,
                          avg_list: list[float],
