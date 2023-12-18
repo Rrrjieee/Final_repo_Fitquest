@@ -138,6 +138,7 @@ class SummaryScreen(Screen):
     def update_results(self):
         if len(self.exer_average['exercises'] > 0):
             self.exer_screen.reset_average()
+            self._app.send_routine(None)
 
     def on_enter(self, *args):
         user: UserDetails = self.user_screen.get_choice()
